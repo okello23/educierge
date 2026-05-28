@@ -375,8 +375,8 @@ button {
 
 .hero-panel .btn-outline {
   background: rgba(255, 255, 255, 0.04);
-  color: var(--gold);
-  -webkit-text-fill-color: var(--gold);
+  color: var(--white);
+  -webkit-text-fill-color: var(--white);
   border: 1.5px solid rgba(245, 200, 0, 0.42);
 }
 
