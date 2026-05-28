@@ -1,1443 +1,661 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Educierge Consults — educierge.org</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-/* ═══════════════════════════════════════════
-   TOKENS
-═══════════════════════════════════════════ */
-:root {
-  --ink:    #0f0e0c;
-  --gold:   #f5c800;
-  --gold2:  #e0b400;
-  --cream:  #faf8f4;
-  --stone:  #f0ede7;
-  --mist:   #e8e4dc;
-  --muted:  #6b6560;
-  --border: #ddd9d0;
-  --white:  #ffffff;
-  --nav-h:  72px;
-  --ease:   cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* ═══════════════════════════════════════════
-   RESET + BASE
-═══════════════════════════════════════════ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
-body{
-  font-family:'Outfit',sans-serif;
-  font-weight:300;
-  background:var(--cream);
-  color:var(--ink);
-  overflow-x:hidden;
-}
-img{display:block;width:100%;object-fit:cover}
-a{text-decoration:none;color:inherit}
-button{border:none;cursor:pointer;font-family:inherit}
-
-/* ═══════════════════════════════════════════
-   NAV
-═══════════════════════════════════════════ */
-#nav{
-  position:fixed;top:0;left:0;right:0;z-index:999;
-  height:var(--nav-h);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 4rem;
-  transition:background 0.4s var(--ease), box-shadow 0.4s var(--ease);
-}
-#nav.scrolled{
-  background:rgba(250,248,244,0.96);
-  backdrop-filter:blur(16px);
-  box-shadow:0 1px 0 var(--border);
-}
-.nav-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.55rem;font-weight:600;letter-spacing:0.04em;
-  color:var(--ink);
-}
-.nav-logo span{color:var(--gold2)}
-.nav-pages{display:flex;gap:0;list-style:none}
-.nav-pages li a{
-  display:block;padding:0.5rem 1.1rem;
-  font-size:0.74rem;letter-spacing:0.16em;text-transform:uppercase;
-  color:var(--muted);font-weight:400;
-  transition:color 0.2s;position:relative;
-}
-.nav-pages li a::after{
-  content:'';position:absolute;bottom:0;left:1.1rem;right:1.1rem;
-  height:2px;background:var(--gold);
-  transform:scaleX(0);transform-origin:left;transition:transform 0.25s var(--ease);
-}
-.nav-pages li a:hover{color:var(--ink)}
-.nav-pages li a:hover::after,.nav-pages li a.active::after{transform:scaleX(1)}
-.nav-pages li a.active{color:var(--ink)}
-.nav-btn{
-  background:var(--ink);color:var(--gold);
-  font-size:0.74rem;letter-spacing:0.16em;text-transform:uppercase;
-  padding:0.65rem 1.6rem;font-weight:500;
-  transition:background 0.2s,transform 0.18s;
-}
-.nav-btn:hover{background:var(--gold);color:var(--ink);transform:translateY(-1px)}
-
-/* Hamburger */
-.nav-hamburger{display:none;flex-direction:column;gap:5px;padding:8px;background:none;cursor:pointer}
-.nav-hamburger span{width:24px;height:2px;background:var(--ink);transition:0.3s}
-
-/* Mobile nav */
-#mobile-nav{
-  display:none;position:fixed;inset:0;z-index:998;
-  background:var(--cream);
-  flex-direction:column;align-items:center;justify-content:center;gap:2rem;
-  opacity:0;pointer-events:none;transition:opacity 0.3s;
-}
-#mobile-nav.open{opacity:1;pointer-events:all}
-#mobile-nav a{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.5rem;font-weight:600;color:var(--ink);
-  transition:color 0.2s;
-}
-#mobile-nav a:hover{color:var(--gold2)}
-.mobile-close{
-  position:absolute;top:1.5rem;right:1.5rem;
-  background:none;font-size:2rem;color:var(--muted);cursor:pointer;
-}
-
-/* ═══════════════════════════════════════════
-   PAGES CONTAINER
-═══════════════════════════════════════════ */
-.page{display:none;min-height:100vh}
-.page.active{display:block}
-
-/* ═══════════════════════════════════════════
-   SHARED COMPONENTS
-═══════════════════════════════════════════ */
-.eyebrow{
-  display:inline-flex;align-items:center;gap:0.7rem;
-  font-size:0.72rem;letter-spacing:0.28em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:1rem;
-}
-.eyebrow::before{content:'';width:24px;height:1.5px;background:var(--gold2);flex-shrink:0}
-.display{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2.8rem,5vw,5rem);
-  font-weight:600;line-height:1.05;
-  letter-spacing:-0.01em;
-  color:var(--ink);
-}
-.display em{font-style:italic;color:var(--gold2)}
-.body-lg{font-size:1.05rem;line-height:1.9;color:var(--muted);font-weight:300}
-.body-sm{font-size:0.9rem;line-height:1.8;color:var(--muted);font-weight:300}
-
-.btn-gold{
-  display:inline-block;background:var(--gold);color:var(--ink);
-  font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;
-  padding:1rem 2.4rem;font-weight:500;
-  transition:background 0.2s,transform 0.18s,box-shadow 0.18s;
-  cursor:pointer;
-}
-.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,200,0,0.3)}
-.btn-ink{
-  display:inline-block;background:var(--ink);color:var(--gold);
-  font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;
-  padding:1rem 2.4rem;font-weight:500;
-  transition:background 0.2s,transform 0.18s;cursor:pointer;
-}
-.btn-ink:hover{background:#2a2a2a;transform:translateY(-2px)}
-.btn-outline{
-  display:inline-block;background:transparent;color:var(--ink);
-  border:1.5px solid var(--border);
-  font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;
-  padding:1rem 2.4rem;font-weight:400;
-  transition:border-color 0.2s,color 0.2s;cursor:pointer;
-}
-.btn-outline:hover{border-color:var(--ink);color:var(--ink)}
-
-/* Scroll-reveal */
-.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
-.reveal.in{opacity:1;transform:translateY(0)}
-.reveal.delay-1{transition-delay:0.12s}
-.reveal.delay-2{transition-delay:0.24s}
-.reveal.delay-3{transition-delay:0.36s}
-.reveal.delay-4{transition-delay:0.48s}
-
-/* ═══════════════════════════════════════════
-   PAGE 1 — HOME
-═══════════════════════════════════════════ */
-
-/* Hero */
-.hero{
-  position:relative;min-height:100vh;
-  display:grid;grid-template-columns:1fr 1fr;
-  overflow:hidden;
-}
-.hero-image-col{position:relative;overflow:hidden}
-.hero-image-col img{
-  height:100%;object-fit:cover;
-  transform:scale(1.05);
-  transition:transform 6s ease;
-}
-.hero-image-col img.loaded{transform:scale(1)}
-.hero-image-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(15,14,12,0.25) 0%,transparent 60%);
-}
-.hero-gold-bar{
-  position:absolute;bottom:0;left:0;right:0;
-  height:6px;background:var(--gold);
-}
-
-.hero-content-col{
-  background:var(--ink);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:calc(var(--nav-h) + 4rem) 5rem 4rem 4rem;
-  position:relative;overflow:hidden;
-}
-.hero-content-col::after{
-  content:'';position:absolute;
-  bottom:-120px;right:-120px;
-  width:360px;height:360px;border-radius:50%;
-  background:var(--gold);opacity:0.07;
-  pointer-events:none;
-}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:0.7rem;
-  font-size:0.72rem;letter-spacing:0.28em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:2.5rem;
-  opacity:0;animation:fadeUp 0.8s 0.2s var(--ease) forwards;
-}
-.hero-eyebrow::before{content:'';width:28px;height:1.5px;background:var(--gold);flex-shrink:0}
-.hero-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(3.5rem,6vw,6rem);
-  font-weight:300;line-height:0.95;letter-spacing:-0.01em;
-  color:var(--white);margin-bottom:2.5rem;
-  opacity:0;animation:fadeUp 0.9s 0.35s var(--ease) forwards;
-}
-.hero-title strong{font-weight:600;display:block}
-.hero-title em{font-style:italic;color:var(--gold);font-weight:300}
-.hero-sub{
-  font-size:0.97rem;line-height:1.85;
-  color:rgba(255,255,255,0.5);max-width:380px;margin-bottom:3rem;
-  opacity:0;animation:fadeUp 0.9s 0.5s var(--ease) forwards;
-}
-.hero-actions{
-  display:flex;gap:1rem;flex-wrap:wrap;
-  opacity:0;animation:fadeUp 0.9s 0.65s var(--ease) forwards;
-}
-.hero-stats{
-  display:flex;gap:0;margin-top:4rem;border-top:1px solid rgba(255,255,255,0.1);
-  padding-top:2rem;
-  opacity:0;animation:fadeUp 0.9s 0.8s var(--ease) forwards;
-}
-.hero-stat{flex:1;padding-right:2rem;border-right:1px solid rgba(255,255,255,0.1)}
-.hero-stat:last-child{border-right:none;padding-left:2rem;padding-right:0}
-.hero-stat-n{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.8rem;font-weight:600;color:var(--gold);line-height:1;
-}
-.hero-stat-l{font-size:0.73rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-top:0.3rem}
-
-/* Home — marquee strip */
-.marquee-strip{
-  background:var(--gold);padding:0.85rem 0;overflow:hidden;
-  border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);
-}
-.marquee-inner{
-  display:flex;gap:0;white-space:nowrap;
-  animation:marquee 22s linear infinite;
-}
-.marquee-inner span{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.1rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--ink);padding:0 3rem;
-}
-.marquee-inner span.sep{color:rgba(0,0,0,0.3);padding:0}
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* Home — intro strip */
-.home-intro{
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:80vh;
-}
-.home-intro-img{position:relative;overflow:hidden;min-height:480px}
-.home-intro-img img{height:100%;object-fit:cover}
-.home-intro-img-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to right,rgba(15,14,12,0.08),transparent);
-}
-.home-intro-text{
-  background:var(--cream);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:6rem 5rem 6rem 6rem;
-}
-.home-intro-text .display{margin-bottom:2rem}
-.home-intro-text .body-lg{max-width:460px;margin-bottom:2.5rem}
-
-/* Home — services preview */
-.home-services{padding:8rem 4rem;background:var(--white)}
-.home-services-header{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  margin-bottom:4rem;
-}
-.services-preview-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
-  background:var(--mist);
-}
-.sp-card{
-  background:var(--white);padding:3rem 2.5rem;
-  position:relative;overflow:hidden;
-  transition:background 0.3s var(--ease);
-  cursor:default;
-}
-.sp-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:3px;background:var(--gold);
-  transform:scaleX(0);transform-origin:left;
-  transition:transform 0.4s var(--ease);
-}
-.sp-card:hover{background:var(--stone)}
-.sp-card:hover::before{transform:scaleX(1)}
-.sp-icon{
-  width:52px;height:52px;background:var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.5rem;margin-bottom:1.8rem;
-}
-.sp-card h3{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.45rem;font-weight:600;margin-bottom:0.9rem;color:var(--ink);
-}
-.sp-card p{font-size:0.85rem;line-height:1.8;color:var(--muted)}
-.sp-num{
-  position:absolute;bottom:1rem;right:1.5rem;
-  font-family:'Cormorant Garamond',serif;
-  font-size:4rem;font-weight:600;color:var(--mist);line-height:1;
-}
-
-/* Home — testimonial hero */
-.home-testi-band{
-  background:var(--ink);
-  padding:7rem 4rem;
-  display:grid;grid-template-columns:1fr 2fr;gap:6rem;align-items:center;
-}
-.testi-band-label{
-  font-family:'Cormorant Garamond',serif;
-  font-size:4rem;font-weight:300;line-height:1;
-  color:var(--gold);
-}
-.testi-band-body blockquote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2rem;font-weight:300;font-style:italic;
-  color:var(--white);line-height:1.5;margin-bottom:1.5rem;
-}
-.testi-band-source{
-  font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;
-  color:rgba(255,255,255,0.38);
-}
-.testi-band-source span{color:var(--gold);margin-left:1rem}
-
-/* Home — image mosaic */
-.home-mosaic{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr;
-  grid-template-rows:300px 300px;
-  gap:4px;
-}
-.mosaic-item{overflow:hidden;position:relative}
-.mosaic-item img{
-  height:100%;object-fit:cover;
-  transition:transform 0.6s var(--ease);
-}
-.mosaic-item:hover img{transform:scale(1.05)}
-.mosaic-item.tall{grid-row:span 2}
-.mosaic-label{
-  position:absolute;bottom:1.2rem;left:1.5rem;
-  background:var(--gold);color:var(--ink);
-  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
-  padding:0.3rem 0.8rem;font-weight:500;
-}
-
-/* ═══════════════════════════════════════════
-   PAGE 2 — ABOUT
-═══════════════════════════════════════════ */
-.about-hero{
-  height:70vh;min-height:480px;
-  position:relative;overflow:hidden;
-  display:flex;align-items:flex-end;
-  padding:5rem 4rem;
-}
-.about-hero img{
-  position:absolute;inset:0;height:100%;
-  object-fit:cover;object-position:center 30%;
-}
-.about-hero-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(15,14,12,0.85) 0%,rgba(15,14,12,0.2) 60%,transparent 100%);
-}
-.about-hero-content{position:relative;z-index:2;max-width:700px}
-.about-hero-content .eyebrow{color:var(--gold)}
-.about-hero-content .eyebrow::before{background:var(--gold)}
-.about-hero-content .display{color:var(--white);font-size:clamp(3rem,5vw,5.5rem)}
-
-.about-story{
-  display:grid;grid-template-columns:1fr 1fr;gap:8rem;
-  padding:8rem 4rem;background:var(--cream);align-items:center;
-}
-.about-story-img{position:relative}
-.about-story-img img{height:560px;object-fit:cover}
-.about-story-img-badge{
-  position:absolute;bottom:-24px;right:-24px;
-  background:var(--gold);padding:2rem;
-  width:160px;height:160px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;
-}
-.about-story-img-badge .n{
-  font-family:'Cormorant Garamond',serif;
-  font-size:3rem;font-weight:600;color:var(--ink);line-height:1;
-}
-.about-story-img-badge .l{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.6);margin-top:0.4rem}
-.about-story-text .display{margin-bottom:1.5rem}
-.about-story-text .body-lg{margin-bottom:1.5rem}
-
-.about-values{
-  background:var(--ink);padding:8rem 4rem;
-}
-.about-values-header{margin-bottom:5rem}
-.about-values-header .eyebrow::before{background:var(--gold)}
-.about-values-header .eyebrow{color:rgba(255,255,255,0.4)}
-.about-values-header .display{color:var(--white)}
-.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,0.05)}
-.value-card{
-  background:var(--ink);padding:3.5rem 3rem;
-  border-bottom:3px solid transparent;
-  transition:border-color 0.3s,background 0.3s;
-}
-.value-card:hover{background:#171615;border-color:var(--gold)}
-.value-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:5rem;font-weight:600;color:rgba(245,200,0,0.12);
-  line-height:1;margin-bottom:1rem;
-}
-.value-card h3{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.6rem;font-weight:600;color:var(--white);margin-bottom:0.8rem;
-}
-.value-card p{font-size:0.88rem;line-height:1.85;color:rgba(255,255,255,0.45)}
-
-.about-ceo{
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:600px;
-}
-.about-ceo-img{position:relative;overflow:hidden;min-height:500px}
-.about-ceo-img img{height:100%;object-fit:cover;object-position:center top}
-.about-ceo-text{
-  background:var(--stone);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:6rem 5rem;
-}
-.about-ceo-text .eyebrow{margin-bottom:1.5rem}
-.about-ceo-quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.8rem;font-weight:300;font-style:italic;
-  color:var(--ink);line-height:1.55;margin-bottom:2rem;
-}
-.about-ceo-credit{font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
-.about-ceo-credit strong{color:var(--ink);display:block;font-size:1rem;letter-spacing:0.05em;font-family:'Cormorant Garamond',serif;font-weight:600;text-transform:none;margin-bottom:0.2rem}
-
-/* ═══════════════════════════════════════════
-   PAGE 3 — SERVICES
-═══════════════════════════════════════════ */
-.services-hero{
-  height:60vh;min-height:400px;position:relative;overflow:hidden;
-  display:flex;align-items:center;padding:5rem 4rem;
-}
-.services-hero img{position:absolute;inset:0;height:100%;object-fit:cover}
-.services-hero-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to right,rgba(15,14,12,0.88) 40%,rgba(15,14,12,0.3) 100%);
-}
-.services-hero-content{position:relative;z-index:2;max-width:600px;padding-top:var(--nav-h)}
-.services-hero-content .eyebrow{color:var(--gold)}
-.services-hero-content .eyebrow::before{background:var(--gold)}
-.services-hero-content .display{color:var(--white)}
-.services-hero-content p{margin-top:1.5rem;color:rgba(255,255,255,0.55);font-size:1rem;line-height:1.8}
-
-.services-list{padding:8rem 4rem;background:var(--cream)}
-.service-row{
-  display:grid;grid-template-columns:1fr 1fr;gap:0;
-  border-bottom:1px solid var(--border);
-  min-height:480px;overflow:hidden;
-}
-.service-row:first-child{border-top:1px solid var(--border)}
-.service-row-img{position:relative;overflow:hidden;min-height:380px}
-.service-row-img img{height:100%;object-fit:cover;transition:transform 0.7s var(--ease)}
-.service-row:hover .service-row-img img{transform:scale(1.04)}
-.service-row-content{
-  display:flex;flex-direction:column;justify-content:center;
-  padding:5rem 5rem 5rem 6rem;
-  background:var(--cream);
-}
-.service-row:nth-child(even) .service-row-img{order:2}
-.service-row:nth-child(even) .service-row-content{padding:5rem 6rem 5rem 5rem}
-.service-row-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:5rem;font-weight:600;color:var(--mist);
-  line-height:1;margin-bottom:0.5rem;
-}
-.service-row h2{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.3rem;font-weight:600;color:var(--ink);
-  margin-bottom:1.2rem;line-height:1.1;
-}
-.service-row p{font-size:0.95rem;line-height:1.85;color:var(--muted);margin-bottom:2rem}
-.service-tag{
-  display:inline-block;
-  background:var(--gold);color:var(--ink);
-  font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;
-  padding:0.3rem 0.8rem;font-weight:500;margin-right:0.4rem;margin-bottom:0.4rem;
-}
-
-/* ═══════════════════════════════════════════
-   PAGE 4 — PROCESS
-═══════════════════════════════════════════ */
-.process-hero{
-  height:55vh;min-height:360px;position:relative;overflow:hidden;
-  display:flex;align-items:center;
-  background:var(--ink);
-}
-.process-hero-bg{
-  position:absolute;inset:0;
-  background:
-    repeating-linear-gradient(0deg,rgba(245,200,0,0.03) 0,rgba(245,200,0,0.03) 1px,transparent 1px,transparent 60px),
-    repeating-linear-gradient(90deg,rgba(245,200,0,0.03) 0,rgba(245,200,0,0.03) 1px,transparent 1px,transparent 60px);
-}
-.process-hero-content{position:relative;z-index:2;padding:5rem 4rem;max-width:640px;padding-top:calc(var(--nav-h) + 3rem)}
-.process-hero-content .eyebrow{color:rgba(255,255,255,0.4)}
-.process-hero-content .eyebrow::before{background:var(--gold)}
-.process-hero-content .display{color:var(--white)}
-.process-hero-content p{margin-top:1.5rem;color:rgba(255,255,255,0.45);font-size:1rem;line-height:1.8}
-
-.process-steps-section{padding:8rem 4rem;background:var(--cream)}
-.process-step{
-  display:grid;grid-template-columns:120px 1fr 1fr;gap:4rem;
-  align-items:start;padding:4rem 0;border-bottom:1px solid var(--border);
-}
-.process-step:last-child{border-bottom:none}
-.process-step-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:5.5rem;font-weight:600;color:var(--gold);line-height:1;
-  padding-top:0.2rem;
-}
-.process-step-left h3{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.2rem;font-weight:600;color:var(--ink);
-  margin-bottom:1rem;
-}
-.process-step-left p{font-size:0.95rem;line-height:1.85;color:var(--muted)}
-.process-step-img{position:relative;overflow:hidden;height:260px}
-.process-step-img img{height:100%;object-fit:cover;transition:transform 0.6s var(--ease)}
-.process-step:hover .process-step-img img{transform:scale(1.04)}
-
-.workplan-band{
-  background:var(--gold);padding:6rem 4rem;
-  display:grid;grid-template-columns:1fr 2fr;gap:6rem;align-items:center;
-}
-.workplan-band-label{
-  font-family:'Cormorant Garamond',serif;
-  font-size:3rem;font-weight:600;color:var(--ink);line-height:1.1;
-}
-.workplan-band-text .body-lg{color:rgba(0,0,0,0.65);margin-bottom:2rem}
-
-/* ═══════════════════════════════════════════
-   PAGE 5 — TEAM
-═══════════════════════════════════════════ */
-.team-hero{
-  height:65vh;min-height:440px;position:relative;overflow:hidden;
-  display:flex;align-items:flex-end;padding:5rem 4rem;
-}
-.team-hero img{position:absolute;inset:0;height:100%;object-fit:cover;object-position:center 20%}
-.team-hero-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(15,14,12,0.9) 0%,rgba(15,14,12,0.3) 60%,transparent 100%);
-}
-.team-hero-content{position:relative;z-index:2}
-.team-hero-content .eyebrow{color:var(--gold)}
-.team-hero-content .eyebrow::before{background:var(--gold)}
-.team-hero-content .display{color:var(--white);font-size:clamp(3rem,5vw,5.5rem)}
-.team-hero-content p{margin-top:1.2rem;color:rgba(255,255,255,0.55);font-size:1rem;line-height:1.7;max-width:560px}
-
-.team-grid-section{padding:8rem 4rem;background:var(--cream)}
-.team-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem}
-.team-card{position:relative;overflow:hidden;background:var(--white);border:1px solid var(--border);transition:box-shadow 0.3s,transform 0.3s}
-.team-card:hover{box-shadow:0 20px 60px rgba(0,0,0,0.1);transform:translateY(-6px)}
-.team-card-img{height:320px;position:relative;overflow:hidden}
-.team-card-img img{height:100%;object-fit:cover;object-position:center top;transition:transform 0.6s var(--ease)}
-.team-card:hover .team-card-img img{transform:scale(1.05)}
-.team-card-img-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(15,14,12,0.5) 0%,transparent 50%);
-  opacity:0;transition:opacity 0.3s;
-}
-.team-card:hover .team-card-img-overlay{opacity:1}
-.team-card-body{padding:2rem}
-.team-role-badge{
-  display:inline-block;background:var(--gold);color:var(--ink);
-  font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;
-  padding:0.28rem 0.7rem;font-weight:500;margin-bottom:0.8rem;
-}
-.team-card-body h3{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.5rem;font-weight:600;color:var(--ink);margin-bottom:0.7rem;
-}
-.team-card-body p{font-size:0.85rem;line-height:1.75;color:var(--muted);margin-bottom:1.2rem}
-.skill-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
-.skill-tag{
-  font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;
-  padding:0.25rem 0.6rem;background:var(--stone);color:var(--muted);border:1px solid var(--border);
-}
-
-/* ═══════════════════════════════════════════
-   PAGE 6 — TESTIMONIALS
-═══════════════════════════════════════════ */
-.testi-hero{
-  height:55vh;min-height:360px;position:relative;overflow:hidden;
-  display:flex;align-items:center;
-}
-.testi-hero img{position:absolute;inset:0;height:100%;object-fit:cover;object-position:center 40%}
-.testi-hero-overlay{
-  position:absolute;inset:0;
-  background:rgba(15,14,12,0.7);
-}
-.testi-hero-content{
-  position:relative;z-index:2;
-  padding:4rem;padding-top:calc(var(--nav-h) + 3rem);
-  text-align:center;width:100%;
-}
-.testi-hero-content .eyebrow{justify-content:center;color:var(--gold)}
-.testi-hero-content .eyebrow::before{display:none}
-.testi-hero-content .display{color:var(--white);max-width:600px;margin:0 auto 1.5rem}
-.testi-hero-content p{color:rgba(255,255,255,0.5);font-size:1rem;line-height:1.8}
-
-.testi-cards-section{padding:8rem 4rem;background:var(--cream)}
-.testi-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-bottom:6rem}
-.testi-card{background:var(--white);border:1px solid var(--border);padding:3rem 2.5rem;transition:box-shadow 0.3s,transform 0.3s}
-.testi-card:hover{box-shadow:0 14px 44px rgba(0,0,0,0.08);transform:translateY(-4px)}
-.testi-qmark{
-  font-family:'Cormorant Garamond',serif;
-  font-size:5rem;color:var(--gold);line-height:0.8;margin-bottom:1.2rem;
-}
-.testi-card p{font-size:0.97rem;line-height:1.9;color:var(--muted);margin-bottom:2rem;font-style:italic;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.2rem}
-.testi-source{display:flex;align-items:center;gap:0.8rem;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);font-weight:500}
-.testi-source::before{content:'';width:20px;height:1.5px;background:var(--gold);flex-shrink:0}
-
-.testi-full-band{
-  background:var(--ink);padding:8rem 4rem;
-  display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;
-}
-.testi-full-img{position:relative;overflow:hidden;height:480px}
-.testi-full-img img{height:100%;object-fit:cover}
-.testi-full-text .eyebrow{color:rgba(255,255,255,0.38)}
-.testi-full-text .eyebrow::before{background:var(--gold)}
-.testi-full-quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2rem;font-weight:300;font-style:italic;
-  color:var(--white);line-height:1.55;margin:1.5rem 0 1.5rem;
-}
-.testi-full-attr{font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.38)}
-.testi-full-attr strong{color:var(--gold);display:block;font-weight:500;margin-bottom:0.2rem}
-
-/* ═══════════════════════════════════════════
-   PAGE 7 — CONTACT
-═══════════════════════════════════════════ */
-.contact-split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
-.contact-left{
-  background:var(--ink);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:calc(var(--nav-h) + 4rem) 5rem 6rem 4rem;
-  position:relative;overflow:hidden;
-}
-.contact-left::before{
-  content:'';position:absolute;top:-100px;right:-100px;
-  width:400px;height:400px;border-radius:50%;
-  background:var(--gold);opacity:0.05;
-}
-.contact-left .eyebrow{color:rgba(255,255,255,0.38)}
-.contact-left .eyebrow::before{background:var(--gold)}
-.contact-left .display{color:var(--white);margin-bottom:2rem}
-.contact-left p{color:rgba(255,255,255,0.45);font-size:0.97rem;line-height:1.8;max-width:360px;margin-bottom:3.5rem}
-.contact-detail{
-  display:flex;gap:1.2rem;align-items:flex-start;
-  padding:1.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);
-}
-.contact-detail:first-of-type{border-top:1px solid rgba(255,255,255,0.06)}
-.cicon{
-  width:42px;height:42px;background:var(--gold);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:1rem;
-}
-.cdt strong{display:block;font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:300;margin-bottom:0.3rem}
-.cdt span{font-size:0.9rem;color:rgba(255,255,255,0.7);line-height:1.6}
-
-.contact-right{
-  background:var(--stone);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:calc(var(--nav-h) + 4rem) 5rem 6rem 6rem;
-}
-.contact-right h3{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;
-}
-.contact-right p.sub{font-size:0.88rem;color:var(--muted);margin-bottom:2.5rem;line-height:1.7}
-.cform input,.cform textarea,.cform select{
-  display:block;width:100%;
-  background:var(--white);
-  border:1.5px solid var(--border);
-  padding:1rem 1.2rem;
-  font-family:'Outfit',sans-serif;font-size:0.9rem;color:var(--ink);
-  margin-bottom:1.2rem;outline:none;appearance:none;
-  transition:border-color 0.2s;
-}
-.cform input::placeholder,.cform textarea::placeholder{color:var(--muted);font-weight:300}
-.cform input:focus,.cform textarea:focus{border-color:var(--ink)}
-.cform textarea{height:140px;resize:none}
-.cform-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.btn-submit{
-  width:100%;background:var(--ink);color:var(--gold);
-  font-family:'Outfit',sans-serif;font-size:0.8rem;letter-spacing:0.18em;text-transform:uppercase;
-  padding:1.1rem;font-weight:500;border:none;cursor:pointer;
-  transition:background 0.2s,transform 0.18s;
-}
-.btn-submit:hover{background:var(--gold);color:var(--ink);transform:translateY(-1px)}
-
-/* Contact map placeholder */
-.contact-map-strip{
-  height:360px;position:relative;overflow:hidden;
-}
-.contact-map-strip img{height:100%;object-fit:cover;filter:grayscale(30%)}
-.map-overlay-card{
-  position:absolute;bottom:2rem;left:2rem;
-  background:var(--white);padding:1.5rem 2rem;
-  border-left:4px solid var(--gold);
-  box-shadow:0 8px 30px rgba(0,0,0,0.12);
-}
-.map-overlay-card p{font-size:0.85rem;color:var(--muted);line-height:1.7}
-.map-overlay-card strong{display:block;font-size:0.95rem;color:var(--ink);margin-bottom:0.3rem;font-weight:500}
-
-/* ═══════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════ */
-#footer{
-  background:#0a0908;
-  border-top:3px solid var(--gold);
-  padding:3rem 4rem;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:1.5rem;
-}
-.footer-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.5rem;font-weight:600;color:var(--white);letter-spacing:0.04em;
-}
-.footer-logo span{color:var(--gold)}
-.footer-copy{font-size:0.75rem;color:rgba(255,255,255,0.28)}
-.footer-tagline{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.28)}
-
-/* ═══════════════════════════════════════════
-   ANIMATIONS
-═══════════════════════════════════════════ */
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(28px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* ═══════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════ */
-@media(max-width:1024px){
-  .hero{grid-template-columns:1fr}
-  .hero-image-col{height:50vh}
-  .hero-content-col{padding:4rem 2rem 4rem}
-  .home-intro,.about-story,.about-ceo,
-  .testi-full-band,.contact-split,.workplan-band{grid-template-columns:1fr}
-  .service-row,.service-row:nth-child(even){grid-template-columns:1fr;display:flex;flex-direction:column}
-  .service-row:nth-child(even) .service-row-img{order:0}
-  .process-step{grid-template-columns:80px 1fr;grid-template-rows:auto auto}
-  .process-step-img{grid-column:2}
-  .home-services-header{flex-direction:column;align-items:flex-start;gap:1.5rem}
-  .home-testi-band{grid-template-columns:1fr}
-  .testi-band-label{font-size:2.5rem}
-  .home-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:200px 200px 200px}
-  .mosaic-item.tall{grid-row:span 1}
-  nav{padding:0 1.5rem}
-  .nav-pages{display:none}
-  .nav-btn{display:none}
-  .nav-hamburger{display:flex}
-  #mobile-nav{display:flex}
-  section,#footer{padding-left:1.5rem;padding-right:1.5rem}
-  .about-hero,.services-hero,.team-hero{padding:3rem 1.5rem}
-  .process-hero-content,.testi-hero-content,.services-hero-content{padding:3rem 1.5rem}
-  .values-grid,.team-cards,.testi-cards-grid{grid-template-columns:1fr}
-  .services-preview-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:600px){
-  .services-preview-grid,.testi-cards-grid,.team-cards{grid-template-columns:1fr}
-  .home-mosaic{grid-template-columns:1fr}
-  .hero-stats{flex-direction:column;gap:1.5rem}
-  .hero-stat{border-right:none;padding:0;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:1.5rem}
-  .hero-stat:last-child{border-bottom:none}
-  .cform-row{grid-template-columns:1fr}
-}
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Educierge Consults | Resourcing, Skilling, Equipping</title>
+<meta name="description" content="Educierge Consults is a Kampala-based HR and organisational consulting firm specialising in recruitment, training, organisational structure, and employee assessment.">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="shortcut icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<!-- ═══ NAV ═══ -->
 <nav id="nav">
-  <a class="nav-logo" href="#" onclick="showPage('home',this)">Edu<span>cierge</span></a>
+  <a class="nav-logo" href="#home" onclick="showPage('home', this)">
+    <img src="assets/logo.png" alt="Educierge Consults logo">
+  </a>
   <ul class="nav-pages">
-    <li><a href="#" onclick="showPage('home',this)" class="active" data-page="home">Home</a></li>
-    <li><a href="#" onclick="showPage('about',this)" data-page="about">About</a></li>
-    <li><a href="#" onclick="showPage('services',this)" data-page="services">Services</a></li>
-    <li><a href="#" onclick="showPage('process',this)" data-page="process">Process</a></li>
-    <li><a href="#" onclick="showPage('team',this)" data-page="team">Our Team</a></li>
-    <li><a href="#" onclick="showPage('testimonials',this)" data-page="testimonials">Testimonials</a></li>
+    <li><a href="#home" data-page="home" class="active" onclick="showPage('home', this)">Home</a></li>
+    <li><a href="#about" data-page="about" onclick="showPage('about', this)">About</a></li>
+    <li><a href="#services" data-page="services" onclick="showPage('services', this)">Services</a></li>
+    <li><a href="#process" data-page="process" onclick="showPage('process', this)">Process</a></li>
+    <li><a href="#team" data-page="team" onclick="showPage('team', this)">Our Team</a></li>
+    <li><a href="#testimonials" data-page="testimonials" onclick="showPage('testimonials', this)">Testimonials</a></li>
   </ul>
-  <button class="nav-btn" onclick="showPage('contact',this)">Get In Touch</button>
-  <button class="nav-hamburger" onclick="toggleMobileNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
+  <button class="btn-ink nav-cta" type="button" onclick="showPage('contact', this)">Get In Touch</button>
+  <button class="nav-hamburger" type="button" onclick="toggleMobileNav()" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
   </button>
 </nav>
 
-<!-- ═══ MOBILE NAV ═══ -->
-<div id="mobile-nav">
-  <button class="mobile-close" onclick="toggleMobileNav()">✕</button>
-  <a href="#" onclick="showPage('home');toggleMobileNav()">Home</a>
-  <a href="#" onclick="showPage('about');toggleMobileNav()">About</a>
-  <a href="#" onclick="showPage('services');toggleMobileNav()">Services</a>
-  <a href="#" onclick="showPage('process');toggleMobileNav()">Process</a>
-  <a href="#" onclick="showPage('team');toggleMobileNav()">Our Team</a>
-  <a href="#" onclick="showPage('testimonials');toggleMobileNav()">Testimonials</a>
-  <a href="#" onclick="showPage('contact');toggleMobileNav()">Contact</a>
+<div id="mobile-nav" aria-hidden="true">
+  <button class="mobile-close" type="button" onclick="toggleMobileNav()" aria-label="Close menu">×</button>
+  <a href="#home" onclick="showPage('home');toggleMobileNav()">Home</a>
+  <a href="#about" onclick="showPage('about');toggleMobileNav()">About</a>
+  <a href="#services" onclick="showPage('services');toggleMobileNav()">Services</a>
+  <a href="#process" onclick="showPage('process');toggleMobileNav()">Process</a>
+  <a href="#team" onclick="showPage('team');toggleMobileNav()">Our Team</a>
+  <a href="#testimonials" onclick="showPage('testimonials');toggleMobileNav()">Testimonials</a>
+  <a href="#contact" onclick="showPage('contact');toggleMobileNav()">Contact</a>
 </div>
 
-<!-- ════════════════════════════════════
-     PAGE: HOME
-════════════════════════════════════ -->
-<div class="page active" id="page-home">
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-image-col">
-      <img src="https://images.unsplash.com/photo-1573497161161-c3e73707e25c?w=1200&q=80&auto=format&fit=crop" alt="Team meeting" id="hero-img"/>
-      <div class="hero-image-overlay"></div>
-      <div class="hero-gold-bar"></div>
-    </div>
-    <div class="hero-content-col">
-      <div class="hero-eyebrow">Kampala, Uganda · Est. 2023</div>
-      <h1 class="hero-title">
-        Re<em>sourcing.</em><br>
-        <strong>Skilling.<br>Equipping.</strong>
-      </h1>
-      <p class="hero-sub">A consortium of seasoned HR professionals dedicated to helping organisations build the right teams, develop talent, and achieve lasting growth.</p>
-      <div class="hero-actions">
-        <button class="btn-gold" onclick="showPage('services')">Explore Services</button>
-        <button class="btn-outline" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2)" onclick="showPage('contact')">Get In Touch</button>
+<main>
+  <div class="page active" id="page-home">
+    <section class="hero">
+      <div class="hero-visual">
+        <img src="https://images.unsplash.com/photo-1573497161030-55f6d9f9a0f4?auto=format&fit=crop&w=1400&q=80" alt="Consulting team in discussion" id="hero-image">
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-n">14+</div>
-          <div class="hero-stat-l">Years experience</div>
+      <div class="hero-panel">
+        <div class="eyebrow reveal">Kampala, Uganda · Company Profile 2023</div>
+        <h1 class="display reveal delay-1">Re<em>sourcing.</em><br>Skilling.<br>Equipping.</h1>
+        <p class="hero-copy reveal delay-2">Educierge Consults is a consortium of experienced professionals specialising in human resource management, customer care management, and employee assessment. We help organisations build capable teams and deliver meaningful growth.</p>
+        <div class="hero-actions reveal delay-3">
+          <button class="btn-gold" type="button" onclick="showPage('services')">Explore Services</button>
+          <button class="btn-outline" type="button" onclick="showPage('contact')">Request a Consultation</button>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-n">4</div>
-          <div class="hero-stat-l">Service areas</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-n">100%</div>
-          <div class="hero-stat-l">Tailored to you</div>
+        <div class="hero-stats reveal delay-4">
+          <div class="hero-stat">
+            <strong>14+</strong>
+            <span>Years executive experience</span>
+          </div>
+          <div class="hero-stat">
+            <strong>4</strong>
+            <span>Core consulting areas</span>
+          </div>
+          <div class="hero-stat">
+            <strong>3</strong>
+            <span>Lead consultants</span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Marquee -->
-  <div class="marquee-strip">
-    <div class="marquee-inner">
-      <span>Recruitment</span><span class="sep">·</span>
-      <span>Training &amp; Development</span><span class="sep">·</span>
-      <span>Organisational Design</span><span class="sep">·</span>
-      <span>Employee Assessment</span><span class="sep">·</span>
-      <span>HR Strategy</span><span class="sep">·</span>
-      <span>Talent Acquisition</span><span class="sep">·</span>
-      <span>Workforce Planning</span><span class="sep">·</span>
-      <!-- duplicate for seamless loop -->
-      <span>Recruitment</span><span class="sep">·</span>
-      <span>Training &amp; Development</span><span class="sep">·</span>
-      <span>Organisational Design</span><span class="sep">·</span>
-      <span>Employee Assessment</span><span class="sep">·</span>
-      <span>HR Strategy</span><span class="sep">·</span>
-      <span>Talent Acquisition</span><span class="sep">·</span>
-      <span>Workforce Planning</span><span class="sep">·</span>
+    <div class="marquee-strip">
+      <div class="marquee-inner">
+        <span>Recruitment &amp; Talent Acquisition</span><span class="sep">·</span>
+        <span>Training &amp; Development</span><span class="sep">·</span>
+        <span>Organisational Structure</span><span class="sep">·</span>
+        <span>Employee Assessment</span><span class="sep">·</span>
+        <span>Customer Care Management</span><span class="sep">·</span>
+        <span>Workforce Planning</span><span class="sep">·</span>
+        <span>Recruitment &amp; Talent Acquisition</span><span class="sep">·</span>
+        <span>Training &amp; Development</span><span class="sep">·</span>
+        <span>Organisational Structure</span><span class="sep">·</span>
+        <span>Employee Assessment</span><span class="sep">·</span>
+        <span>Customer Care Management</span><span class="sep">·</span>
+        <span>Workforce Planning</span><span class="sep">·</span>
+      </div>
     </div>
+
+    <section class="split-intro">
+      <div class="split-intro-media">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" alt="Strategic business consultation meeting">
+      </div>
+      <div class="split-intro-copy">
+        <div class="eyebrow reveal">Welcome</div>
+        <h2 class="display reveal delay-1">Building <em>People</em>, Building Organisations</h2>
+        <p class="lead reveal delay-2">Welcome to Educierge Consults. Our mission as a consulting company is to support clients in realising their goals and capabilities by delivering specialised solutions that respond to real operational needs and growth challenges.</p>
+        <p class="lead reveal delay-3">Whether you need help with strategy formulation, operational effectiveness, customer care capability, or organisational change, our team brings the experience and resources to support lasting results.</p>
+        <div class="reveal delay-4">
+          <button class="btn-ink" type="button" onclick="showPage('about')">Learn Our Story</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell services-preview">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow reveal">Our Services</div>
+          <h2 class="display reveal delay-1">The Core of What We <em>Offer</em></h2>
+        </div>
+        <button class="btn-outline reveal delay-2" type="button" onclick="showPage('services')">View Full Service Detail</button>
+      </div>
+      <div class="card-grid-4">
+        <article class="service-card reveal">
+          <div class="service-icon">🏗</div>
+          <h3>Organisational Structure</h3>
+          <p>Guidance on company design, organogram review, and role alignment so structure supports the business strategy.</p>
+          <div class="service-num">01</div>
+        </article>
+        <article class="service-card reveal delay-1">
+          <div class="service-icon">🎯</div>
+          <h3>Recruitment &amp; Talent Acquisition</h3>
+          <p>Attracting, screening, interviewing, and onboarding the right talent for immediate performance and long-term fit.</p>
+          <div class="service-num">02</div>
+        </article>
+        <article class="service-card reveal delay-2">
+          <div class="service-icon">📈</div>
+          <h3>Training &amp; Development</h3>
+          <p>Training initiatives that improve staff knowledge, service quality, team confidence, and measurable productivity.</p>
+          <div class="service-num">03</div>
+        </article>
+        <article class="service-card reveal delay-3">
+          <div class="service-icon">🔎</div>
+          <h3>Employee Assessment</h3>
+          <p>Assessing current teams for skill fit, effective placement, internal mobility, and staffing gap visibility.</p>
+          <div class="service-num">04</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="testimonial-band">
+      <div class="testimonial-band-label reveal">What clients<br>say about<br>the work.</div>
+      <div class="reveal delay-1">
+        <blockquote>“Their experience, skills, and competence enable us to identify new business areas that have boosted our staff productivity and enhanced job satisfaction in our company.”</blockquote>
+        <cite>OcTech</cite>
+      </div>
+    </section>
+
+    <section class="mosaic">
+      <div class="mosaic-item tall">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80" alt="Team workshop">
+        <div class="mosaic-label">Workshops</div>
+      </div>
+      <div class="mosaic-item">
+        <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=700&q=80" alt="Leadership coaching">
+      </div>
+      <div class="mosaic-item">
+        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80" alt="Planning session">
+      </div>
+      <div class="mosaic-item">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=700&q=80" alt="Facilitated strategy meeting">
+      </div>
+      <div class="mosaic-item">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=700&q=80" alt="Collaborative office session">
+      </div>
+    </section>
   </div>
 
-  <!-- Intro -->
-  <div class="home-intro">
-    <div class="home-intro-img">
-      <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=80&auto=format&fit=crop" alt="Consulting session"/>
-      <div class="home-intro-img-overlay"></div>
-    </div>
-    <div class="home-intro-text">
-      <p class="eyebrow reveal">Who We Are</p>
-      <h2 class="display reveal delay-1">Building <em>People,</em><br>Building Organisations</h2>
-      <p class="body-lg reveal delay-2">Educierge is a consortium of experienced HR professionals offering consultation services. We specialise in human resource management, customer care, and workforce assessment — delivering solutions that produce measurable, lasting results.</p>
-      <div class="reveal delay-3">
-        <button class="btn-ink" onclick="showPage('about')">Our Story</button>
+  <div class="page" id="page-about">
+    <section class="page-hero">
+      <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=80" alt="Modern office interior">
+      <div class="page-hero-content">
+        <div class="eyebrow">About Company</div>
+        <h1 class="display">About <em>Educierge</em></h1>
+        <p>We are a consortium of consultants committed to helping organisations strengthen people capability, service quality, and operational effectiveness.</p>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Services preview -->
-  <section class="home-services">
-    <div class="home-services-header">
+    <section class="story-grid">
+      <div class="story-media reveal">
+        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1100&q=80" alt="Consultants collaborating">
+        <div class="story-badge">
+          <strong>2023</strong>
+          <span>Profile Edition</span>
+        </div>
+      </div>
       <div>
-        <p class="eyebrow reveal">What We Offer</p>
-        <h2 class="display reveal delay-1">Our Core <em>Services</em></h2>
+        <div class="eyebrow reveal">Who We Are</div>
+        <h2 class="display reveal delay-1">A Consortium Built on <em>Experience</em></h2>
+        <p class="lead reveal delay-2">Educierge specialises in human resource management, customer care management, and assessment. Our qualified professionals work in synergy to meet client needs with practical, high-quality support.</p>
+        <p class="lead reveal delay-3">We help clients with strategy formulation, operational effectiveness, and organisational change. Because every client has different demands, our services are tailored to match each context rather than forced into a standard template.</p>
+        <p class="lead reveal delay-4">We are equally committed to building lasting relationships, staying available to offer direction and support long after recommendations are made.</p>
       </div>
-      <button class="btn-outline reveal delay-2" onclick="showPage('services')">View All Services</button>
-    </div>
-    <div class="services-preview-grid">
-      <div class="sp-card reveal">
-        <div class="sp-icon">🏗️</div>
-        <h3>Organisational Structure</h3>
-        <p>Expert guidance on company design, ensuring your organogram aligns with your goals, objectives, and vision.</p>
-        <div class="sp-num">01</div>
-      </div>
-      <div class="sp-card reveal delay-1">
-        <div class="sp-icon">🎯</div>
-        <h3>Recruitment &amp; Talent</h3>
-        <p>We attract, screen, and hire the best talent — managing job descriptions, postings, and the full onboarding journey.</p>
-        <div class="sp-num">02</div>
-      </div>
-      <div class="sp-card reveal delay-2">
-        <div class="sp-icon">📈</div>
-        <h3>Training &amp; Development</h3>
-        <p>Bespoke training initiatives designed to enhance team knowledge, capabilities, and long-term performance.</p>
-        <div class="sp-num">03</div>
-      </div>
-      <div class="sp-card reveal delay-3">
-        <div class="sp-icon">🔍</div>
-        <h3>Employee Assessment</h3>
-        <p>Comprehensive assessment to ensure people are placed where they create the most value — and gaps are filled smartly.</p>
-        <div class="sp-num">04</div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Testimonial band -->
-  <div class="home-testi-band">
-    <div class="testi-band-label reveal">What<br>clients<br>say.</div>
-    <div class="testi-band-body reveal delay-1">
-      <blockquote>"Their experience, skills, and competence enabled us to identify new business areas that have boosted our staff productivity and enhanced job satisfaction in our company."</blockquote>
-      <div class="testi-band-source">Client Testimonial <span>— OcTech</span></div>
-    </div>
+    <section class="section-shell mission-panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow reveal">Vision &amp; Mission</div>
+          <h2 class="display reveal delay-1">Clarity Around the <em>Goal</em></h2>
+        </div>
+      </div>
+      <div class="mission-grid">
+        <article class="mini-card reveal">
+          <span class="label">Our Goal</span>
+          <h3>Resources That Deliver</h3>
+          <p>We focus on getting clients the resources they need and supporting those resources to deliver results.</p>
+        </article>
+        <article class="mini-card reveal delay-1">
+          <span class="label">Our Mission</span>
+          <h3>Empower Companies to Succeed</h3>
+          <p>We empower companies through effective human resourcing, strong strategy, the right people, and meaningful training.</p>
+        </article>
+        <article class="mini-card reveal delay-2">
+          <span class="label">Our Vision</span>
+          <h3>The Go-To Consulting Firm</h3>
+          <p>We aspire to be the trusted consulting partner for companies seeking sustainable growth and knowledgeable direction.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell values-section">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow reveal">What Drives Us</div>
+          <h2 class="display reveal delay-1">Our Working <em>Principles</em></h2>
+        </div>
+      </div>
+      <div class="card-grid-3">
+        <article class="value-card reveal">
+          <div class="value-num">01</div>
+          <h3>Tailored Engagements</h3>
+          <p>Every assignment is shaped around the client’s objectives, challenges, workforce composition, and decision-making realities.</p>
+        </article>
+        <article class="value-card reveal delay-1">
+          <div class="value-num">02</div>
+          <h3>Trusted Partnership</h3>
+          <p>We aim to be more than a vendor by becoming a reliable thought partner for staffing, service quality, and growth decisions.</p>
+        </article>
+        <article class="value-card reveal delay-2">
+          <div class="value-num">03</div>
+          <h3>Results That Matter</h3>
+          <p>Our work is designed to improve organisational capability, staff productivity, role fit, and the everyday quality of execution.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="ceo-grid">
+      <div class="ceo-media">
+        <img src="https://images.unsplash.com/photo-1573497019418-b400bb3ab074?auto=format&fit=crop&w=1200&q=80" alt="Executive portrait">
+      </div>
+      <div class="ceo-copy">
+        <div class="eyebrow reveal">CEO Message</div>
+        <div class="ceo-quote reveal delay-1">“We want to be more than just a service provider. We want to be the trusted partner that helps our customers accomplish their strategic goals.”</div>
+        <p class="reveal delay-2">Our team’s experience across fields and job functions enables us to provide complete solutions that create genuine business impact, from strategy formulation and operational efficiency to organisational change and beyond.</p>
+        <p class="reveal delay-3">We take a tailored approach to every engagement because every organisation faces different issues and deserves solutions that fit its needs.</p>
+        <div class="ceo-name reveal delay-4">Agudo Carolyne · CEO and Founder</div>
+      </div>
+    </section>
   </div>
 
-  <!-- Mosaic -->
-  <div class="home-mosaic">
-    <div class="mosaic-item tall">
-      <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80&auto=format&fit=crop" alt="Workshop"/>
-      <div class="mosaic-label">Workshop</div>
-    </div>
-    <div class="mosaic-item">
-      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80&auto=format&fit=crop" alt="Team"/>
-    </div>
-    <div class="mosaic-item">
-      <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&q=80&auto=format&fit=crop" alt="Strategy"/>
-    </div>
-    <div class="mosaic-item">
-      <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80&auto=format&fit=crop" alt="Collaboration"/>
-    </div>
-    <div class="mosaic-item">
-      <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&q=80&auto=format&fit=crop" alt="Leader"/>
-    </div>
+  <div class="page" id="page-services">
+    <section class="page-hero">
+      <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&q=80" alt="Business consulting session">
+      <div class="page-hero-content">
+        <div class="eyebrow">Our Services</div>
+        <h1 class="display">Consulting Designed for <em>Execution</em></h1>
+        <p>We deliver practical HR and organisational support that helps leaders structure teams well, hire accurately, and build staff capacity.</p>
+      </div>
+    </section>
+
+    <section class="services-list">
+      <article class="service-row reveal">
+        <div class="service-media">
+          <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80" alt="Organisational structure review">
+        </div>
+        <div class="service-copy">
+          <div class="num">01</div>
+          <h2>Organisational Structure</h2>
+          <p>We provide guidance on best practices for company design and help ensure your organogram aligns with business goals, objectives, and vision. This includes structure review, role clarity, reporting line evaluation, and alignment of functions to strategy.</p>
+          <div class="tag-row">
+            <span class="tag">Organogram Review</span>
+            <span class="tag">Role Clarity</span>
+            <span class="tag">Business Alignment</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="service-row reveal">
+        <div class="service-media">
+          <img src="https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?auto=format&fit=crop&w=1200&q=80" alt="Talent acquisition interview">
+        </div>
+        <div class="service-copy">
+          <div class="num">02</div>
+          <h2>Recruitment &amp; Talent Acquisition</h2>
+          <p>We attract, screen, and hire the best talent for open positions. Our support includes reviewing and creating job descriptions, posting opportunities, conducting interviews, advising on selection, and onboarding new staff into the culture and role expectations.</p>
+          <div class="tag-row">
+            <span class="tag">Job Descriptions</span>
+            <span class="tag">Interviews</span>
+            <span class="tag">Onboarding</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="service-row reveal">
+        <div class="service-media">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80" alt="Training workshop">
+        </div>
+        <div class="service-copy">
+          <div class="num">03</div>
+          <h2>Training &amp; Development</h2>
+          <p>We create training initiatives that enhance personnel knowledge and capabilities. That includes needs assessment, material development, facilitation, coaching, customer care training, conflict resolution support, and assessment of training effectiveness after delivery.</p>
+          <div class="tag-row">
+            <span class="tag">Training Design</span>
+            <span class="tag">Facilitation</span>
+            <span class="tag">Capability Growth</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="service-row reveal">
+        <div class="service-media">
+          <img src="https://images.unsplash.com/photo-1551836022-8b2858c9c69b?auto=format&fit=crop&w=1200&q=80" alt="Employee assessment review">
+        </div>
+        <div class="service-copy">
+          <div class="num">04</div>
+          <h2>Assessment</h2>
+          <p>We assess current employees to confirm effective placement based on qualifications and expertise, identify internal opportunities for open roles, and surface staffing gaps that affect delivery, service quality, and team productivity.</p>
+          <div class="tag-row">
+            <span class="tag">Placement Review</span>
+            <span class="tag">Skills Mapping</span>
+            <span class="tag">Internal Mobility</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section-shell mission-panel">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow reveal">Where We Add Value</div>
+          <h2 class="display reveal delay-1">Support Across the <em>Workforce Cycle</em></h2>
+        </div>
+      </div>
+      <div class="card-grid-3">
+        <article class="mini-card reveal">
+          <h3>Workforce Design</h3>
+          <p>Clarifying structures, roles, and accountability to help teams work with less friction and stronger ownership.</p>
+        </article>
+        <article class="mini-card reveal delay-1">
+          <h3>People Capability</h3>
+          <p>Improving technical strength, service standards, and future leadership readiness through focused skilling interventions.</p>
+        </article>
+        <article class="mini-card reveal delay-2">
+          <h3>Operational Confidence</h3>
+          <p>Helping leadership make better staffing and development decisions using grounded assessment and practical reporting.</p>
+        </article>
+      </div>
+    </section>
   </div>
 
-</div><!-- /page-home -->
+  <div class="page" id="page-process">
+    <section class="process-hero">
+      <div class="dark-copy">
+        <div class="eyebrow">The Process</div>
+        <h1 class="display">A Clear Route From Review to <em>Results</em></h1>
+        <p>Our delivery model is structured, collaborative, and transparent. We work to agreed timelines, provide progress visibility, and move forward with approved client feedback.</p>
+      </div>
+    </section>
 
-<!-- ════════════════════════════════════
-     PAGE: ABOUT
-════════════════════════════════════ -->
-<div class="page" id="page-about">
-  <section class="about-hero">
-    <img src="https://images.unsplash.com/photo-1590650153855-d9e808231d41?w=1600&q=80&auto=format&fit=crop" alt="Office"/>
-    <div class="about-hero-overlay"></div>
-    <div class="about-hero-content">
-      <p class="eyebrow">Our Story</p>
-      <h1 class="display">About <em>Educierge</em></h1>
-    </div>
-  </section>
-
-  <section class="about-story">
-    <div class="about-story-img reveal">
-      <img src="https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&q=80&auto=format&fit=crop" alt="Team at work"/>
-      <div class="about-story-img-badge">
-        <div class="n">2023</div>
-        <div class="l">Founded in Kampala</div>
-      </div>
-    </div>
-    <div class="about-story-text">
-      <p class="eyebrow reveal">Who We Are</p>
-      <h2 class="display reveal delay-1">A Consortium <em>Built</em> on Expertise</h2>
-      <p class="body-lg reveal delay-2">Educierge is a consortium of experienced professionals offering consultation services, specialising in human resource management, customer care management, and assessment. Our qualified team works in synergy to meet each client's unique needs.</p>
-      <p class="body-lg reveal delay-2" style="margin-top:1rem">We offer the expertise and resources to support you — whether you need assistance with strategy formulation, operational effectiveness, or organisational change.</p>
-      <p class="body-lg reveal delay-3" style="margin-top:1rem">We understand that every client has unique demands, so we customise our services accordingly. We're also dedicated to creating lasting connections and are always ready to offer guidance.</p>
-    </div>
-  </section>
-
-  <section class="about-values">
-    <div class="about-values-header">
-      <p class="eyebrow reveal">What Drives Us</p>
-      <h2 class="display reveal delay-1">Our <em>Values</em></h2>
-    </div>
-    <div class="values-grid">
-      <div class="value-card reveal">
-        <div class="value-num">01</div>
-        <h3>Client-Centred</h3>
-        <p>Every engagement is built around your specific situation. We listen before we prescribe, and we tailor everything we do to your context.</p>
-      </div>
-      <div class="value-card reveal delay-1">
-        <div class="value-num">02</div>
-        <h3>Outcome-Driven</h3>
-        <p>We measure success by your results — not by the volume of work delivered. Every recommendation we make is designed to produce tangible impact.</p>
-      </div>
-      <div class="value-card reveal delay-2">
-        <div class="value-num">03</div>
-        <h3>Long-Term Partnership</h3>
-        <p>We believe in building lasting relationships. Our goal is to be the trusted advisor you return to as your organisation evolves and grows.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="about-ceo">
-    <div class="about-ceo-img">
-      <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80&auto=format&fit=crop" alt="CEO"/>
-    </div>
-    <div class="about-ceo-text">
-      <p class="eyebrow reveal">Leadership</p>
-      <p class="about-ceo-quote reveal delay-1">"We want to be more than a service provider — we want to be the trusted partner that helps our clients accomplish their strategic goals."</p>
-      <div class="about-ceo-credit reveal delay-2">
-        <strong>Chief Executive Officer &amp; Founder</strong>
-        Educierge Consults · Kampala, Uganda
-      </div>
-      <div style="margin-top:2.5rem" class="reveal delay-3">
-        <button class="btn-ink" onclick="showPage('team')">Meet the Team</button>
-      </div>
-    </div>
-  </section>
-</div><!-- /page-about -->
-
-<!-- ════════════════════════════════════
-     PAGE: SERVICES
-════════════════════════════════════ -->
-<div class="page" id="page-services">
-  <section class="services-hero">
-    <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1600&q=80&auto=format&fit=crop" alt="Strategy session"/>
-    <div class="services-hero-overlay"></div>
-    <div class="services-hero-content">
-      <p class="eyebrow">What We Do</p>
-      <h1 class="display">Our <em>Services</em></h1>
-      <p>Comprehensive HR and organisational consulting tailored to your unique challenges and ambitions.</p>
-    </div>
-  </section>
-
-  <section class="services-list">
-    <div class="service-row reveal">
-      <div class="service-row-img">
-        <img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=900&q=80&auto=format&fit=crop" alt="Organisational Design"/>
-      </div>
-      <div class="service-row-content">
-        <div class="service-row-num">01</div>
-        <h2>Organisational Structure</h2>
-        <p>We provide expert guidance on company design and organogram review — ensuring your structure aligns with your goals, objectives, and long-term vision. We help you move from what is to what should be.</p>
+    <section class="process-steps">
+      <article class="process-step reveal">
+        <div class="num">01</div>
         <div>
-          <span class="service-tag">Company Design</span>
-          <span class="service-tag">Organogram Review</span>
-          <span class="service-tag">Role Clarity</span>
+          <h3>Understand the Current State</h3>
+          <p>We begin by reviewing the company context, organogram, role expectations, staffing realities, and the outcomes management is trying to achieve.</p>
         </div>
-      </div>
-    </div>
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1000&q=80" alt="Discovery meeting">
+        </div>
+      </article>
 
-    <div class="service-row reveal">
-      <div class="service-row-img">
-        <img src="https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=900&q=80&auto=format&fit=crop" alt="Recruitment"/>
-      </div>
-      <div class="service-row-content">
-        <div class="service-row-num">02</div>
-        <h2>Recruitment &amp; Talent Acquisition</h2>
-        <p>We attract, screen, and help hire the best talent for open positions. We review and create job descriptions, post job openings, and conduct interviews and full onboarding — so you start with the right people.</p>
+      <article class="process-step reveal">
+        <div class="num">02</div>
         <div>
-          <span class="service-tag">Talent Search</span>
-          <span class="service-tag">Screening</span>
-          <span class="service-tag">Onboarding</span>
+          <h3>Review Roles and People</h3>
+          <p>We review job descriptions, assess current employees, evaluate placement, and identify internal and external resourcing needs.</p>
         </div>
-      </div>
-    </div>
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1000&q=80" alt="Assessment workshop">
+        </div>
+      </article>
 
-    <div class="service-row reveal">
-      <div class="service-row-img">
-        <img src="https://images.unsplash.com/photo-1544531585-9847b68c8c86?w=900&q=80&auto=format&fit=crop" alt="Training"/>
-      </div>
-      <div class="service-row-content">
-        <div class="service-row-num">03</div>
-        <h2>Training &amp; Development</h2>
-        <p>We create training initiatives to enhance personnel knowledge and capabilities. We develop bespoke materials, deliver engaging training sessions, and assess the success of every initiative — ensuring impact lasts.</p>
+      <article class="process-step reveal">
+        <div class="num">03</div>
         <div>
-          <span class="service-tag">Programme Design</span>
-          <span class="service-tag">Facilitation</span>
-          <span class="service-tag">Impact Assessment</span>
+          <h3>Deliver the Agreed Interventions</h3>
+          <p>Based on the approved direction, we recruit, train, restructure, or advise as needed, while keeping management updated on milestone progress.</p>
         </div>
-      </div>
-    </div>
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1000&q=80" alt="Implementation session">
+        </div>
+      </article>
 
-    <div class="service-row reveal">
-      <div class="service-row-img">
-        <img src="https://images.unsplash.com/photo-1551836022-4b4de91e3b0b?w=900&q=80&auto=format&fit=crop" alt="Assessment"/>
-      </div>
-      <div class="service-row-content">
-        <div class="service-row-num">04</div>
-        <h2>Employee Assessment</h2>
-        <p>We assess present employees to ensure they are effectively placed throughout the organisation given their qualifications and expertise, and identify opportunities to fill open positions through internal methods.</p>
+      <article class="process-step reveal">
+        <div class="num">04</div>
         <div>
-          <span class="service-tag">Skills Mapping</span>
-          <span class="service-tag">Performance Review</span>
-          <span class="service-tag">Placement</span>
+          <h3>Report, Refine, and Sustain</h3>
+          <p>We provide consistent progress reports, incorporate approved client feedback, and strengthen capacity through ongoing people management and skill development support.</p>
+        </div>
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=80" alt="Progress review">
+        </div>
+      </article>
+    </section>
+
+    <section class="workplan-band">
+      <div class="workplan-title reveal">Our Work Plan</div>
+      <div class="reveal delay-1">
+        <p>Our work plan is based on agreed timelines with the management team. Educierge provides consistent progress reports according to each task and always proceeds with approved feedback from client leadership.</p>
+        <p>We place strong emphasis on investing in a company’s technical capability and future leadership strength through personnel management and skills development.</p>
+        <button class="btn-ink" type="button" onclick="showPage('contact')">Discuss Your Work Plan</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" id="page-team">
+    <section class="page-hero">
+      <img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1600&q=80" alt="Professional team portrait">
+      <div class="page-hero-content">
+        <div class="eyebrow">Our Team</div>
+        <h1 class="display">Experienced People Behind the <em>Practice</em></h1>
+        <p>A vibrant, hardworking, and efficient team with a wealth of knowledge, ready to enhance company capacity.</p>
+      </div>
+    </section>
+
+    <section class="team-section">
+      <div class="card-grid-3">
+        <article class="team-card reveal">
+          <img src="https://images.unsplash.com/photo-1573497019418-b400bb3ab074?auto=format&fit=crop&w=900&q=80" alt="Carolyne Agudo profile">
+          <div class="team-card-body">
+            <div class="role-badge">CEO &amp; Founder</div>
+            <h3>Carolyne Agudo</h3>
+            <p>Customer Experience leader with 14 years in banking, combining service excellence, staff development, recruitment advisory, and training support.</p>
+            <div class="pill-row">
+              <span class="pill">Customer Experience</span>
+              <span class="pill">Recruitment</span>
+              <span class="pill">Training Needs</span>
+              <span class="pill">Change Management</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="team-card reveal delay-1">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80" alt="Lonnah Arwako profile">
+          <div class="team-card-body">
+            <div class="role-badge">Lead Consultant</div>
+            <h3>Lonnah Arwako</h3>
+            <p>HR and Operations Manager with over 10 years of experience in administration, organisational development, personnel growth, and team building.</p>
+            <div class="pill-row">
+              <span class="pill">Talent Sourcing</span>
+              <span class="pill">Policy Design</span>
+              <span class="pill">Employee Relations</span>
+              <span class="pill">Operations</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="team-card reveal delay-2">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80" alt="Lameck Kasendwa profile">
+          <div class="team-card-body">
+            <div class="role-badge">Lead Consultant</div>
+            <h3>Lameck Kasendwa</h3>
+            <p>Administrator with over 15 years in the banking sector, focused on transformation, resource management, restructuring, and practical training systems.</p>
+            <div class="pill-row">
+              <span class="pill">Transformation</span>
+              <span class="pill">HR Management</span>
+              <span class="pill">Projects</span>
+              <span class="pill">Capacity Building</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="bio-panels">
+        <article class="bio-panel reveal">
+          <strong>Selected Background</strong>
+          <h4>Carolyne Agudo</h4>
+          <p class="muted">Head of Customer Experience at Housing Finance Bank since 2022, with prior consultancy work for Service Corps, Daniel Choudry Sales Institute, and OcTech.</p>
+          <ul>
+            <li>Bachelor’s degree in Development Studies, Makerere University.</li>
+            <li>Supports recruitment, onboarding, service audits, and staff training.</li>
+            <li>Known for performance management, service level oversight, and customer experience standards.</li>
+          </ul>
+        </article>
+
+        <article class="bio-panel reveal delay-1">
+          <strong>Selected Background</strong>
+          <h4>Lonnah Arwako</h4>
+          <p class="muted">Human Resource and Operations Manager at Hope Alive, with consultancy experience in customer training, employee relations, and mental health awareness facilitation.</p>
+          <ul>
+            <li>MBA in progress at Uganda Management Institute.</li>
+            <li>Bachelor’s degree in Community Psychology, Makerere University.</li>
+            <li>Strong experience in policy implementation, appraisals, mentor training, and compliance support.</li>
+          </ul>
+        </article>
+
+        <article class="bio-panel reveal delay-2">
+          <strong>Selected Background</strong>
+          <h4>Lameck Kasendwa</h4>
+          <p class="muted">Head of Operations at Cairo Bank Uganda, leading restructuring, resourcing, performance monitoring frameworks, and practical training initiatives.</p>
+          <ul>
+            <li>Bachelor of Business Administration, Sikkim Manipal University.</li>
+            <li>Diploma in Commercial Arts, Kyambogo University.</li>
+            <li>Experience in strategy, process definition, and staffing projects across banking and consulting assignments.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" id="page-testimonials">
+    <section class="page-hero">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80" alt="Team in workshop">
+      <div class="page-hero-content">
+        <div class="eyebrow">Testimonials</div>
+        <h1 class="display">What Clients <em>Remember</em></h1>
+        <p>The brochure highlights practical results around recruitment, training, understanding staff capability, and improved productivity.</p>
+      </div>
+    </section>
+
+    <section class="testimonials-section">
+      <div class="card-grid-3">
+        <article class="testimonial-card reveal">
+          <div class="testimonial-mark">“</div>
+          <p>They have been of great support to us in training our staff, recruitment, and onboarding.</p>
+          <div class="testimonial-source">Service Corps</div>
+        </article>
+        <article class="testimonial-card reveal delay-1">
+          <div class="testimonial-mark">“</div>
+          <p>They offered us a deeper understanding of staff and skilling the right team to enhance our productivity.</p>
+          <div class="testimonial-source">Daniel Choudry Sales Institute</div>
+        </article>
+        <article class="testimonial-card reveal delay-2">
+          <div class="testimonial-mark">“</div>
+          <p>Their experience, skills, and competence enable us to identify new business areas that have boosted our staff productivity and enhanced job satisfaction in our company.</p>
+          <div class="testimonial-source">OcTech</div>
+        </article>
+      </div>
+
+      <div class="partner-band reveal">
+        <div>
+          <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80" alt="Client engagement workshop">
+        </div>
+        <div>
+          <div class="eyebrow">Why It Matters</div>
+          <h2 class="display">Support That Improves <em>Team Output</em></h2>
+          <p>Across the brochure case references, the recurring outcomes are clear: sharper recruitment, stronger onboarding, better staff understanding, and improved productivity. That pattern is the center of the Educierge offer.</p>
+          <p>We work best with organisations that want thoughtful people decisions backed by practical delivery.</p>
+          <button class="btn-gold" type="button" onclick="showPage('contact')">Start the Conversation</button>
         </div>
       </div>
-    </div>
-  </section>
-</div><!-- /page-services -->
+    </section>
+  </div>
 
-<!-- ════════════════════════════════════
-     PAGE: PROCESS
-════════════════════════════════════ -->
-<div class="page" id="page-process">
-  <section class="process-hero">
-    <div class="process-hero-bg"></div>
-    <div class="process-hero-content">
-      <p class="eyebrow">How We Work</p>
-      <h1 class="display">The <em>Process</em></h1>
-      <p>A clear, transparent methodology designed to deliver results you can track and trust at every stage.</p>
-    </div>
-  </section>
+  <div class="page" id="page-contact">
+    <section class="contact-shell">
+      <div class="contact-left">
+        <div class="eyebrow reveal">Connect With Us</div>
+        <h1 class="display reveal delay-1">Let’s Build the Right <em>Team</em></h1>
+        <p class="reveal delay-2">We would love to hear about your organisation, your staffing needs, and the capability gaps you want to solve. Reach out directly or send a message below.</p>
 
-  <section class="process-steps-section">
-    <div class="process-step reveal">
-      <div class="process-step-num">01</div>
-      <div class="process-step-left">
-        <h3>Discovery</h3>
-        <p>We begin by deeply understanding your organisation's current structure, workforce challenges, and strategic objectives. No assumptions — only listening and learning.</p>
-      </div>
-      <div class="process-step-img">
-        <img src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=700&q=80&auto=format&fit=crop" alt="Discovery"/>
-      </div>
-    </div>
-
-    <div class="process-step reveal">
-      <div class="process-step-num">02</div>
-      <div class="process-step-left">
-        <h3>Assessment</h3>
-        <p>We evaluate your existing team, job descriptions, and operational gaps to develop a clear, evidence-based picture of what your organisation needs to thrive.</p>
-      </div>
-      <div class="process-step-img">
-        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&q=80&auto=format&fit=crop" alt="Assessment"/>
-      </div>
-    </div>
-
-    <div class="process-step reveal">
-      <div class="process-step-num">03</div>
-      <div class="process-step-left">
-        <h3>Delivery</h3>
-        <p>We execute agreed interventions — recruitment, training, restructuring — on approved timelines. We provide consistent progress reports and proceed only with approved client feedback.</p>
-      </div>
-      <div class="process-step-img">
-        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=700&q=80&auto=format&fit=crop" alt="Delivery"/>
-      </div>
-    </div>
-
-    <div class="process-step reveal">
-      <div class="process-step-num">04</div>
-      <div class="process-step-left">
-        <h3>Review &amp; Sustain</h3>
-        <p>We monitor outcomes, measure impact, and provide follow-up support to ensure the results we deliver are sustainable and continue to grow over time.</p>
-      </div>
-      <div class="process-step-img">
-        <img src="https://images.unsplash.com/photo-1543269664-647163e97267?w=700&q=80&auto=format&fit=crop" alt="Review"/>
-      </div>
-    </div>
-  </section>
-
-  <section class="workplan-band">
-    <div class="workplan-band-label reveal">Our<br>Work<br>Plan</div>
-    <div class="workplan-band-text">
-      <p class="body-lg reveal delay-1">Our Work Plan is built on agreed timelines with your management team. We give consistent progress reports for each task, and we always proceed with approved feedback from your leadership — so you are never left in the dark.</p>
-      <div class="reveal delay-2">
-        <button class="btn-ink" onclick="showPage('contact')">Start a Conversation</button>
-      </div>
-    </div>
-  </section>
-</div><!-- /page-process -->
-
-<!-- ════════════════════════════════════
-     PAGE: TEAM
-════════════════════════════════════ -->
-<div class="page" id="page-team">
-  <section class="team-hero">
-    <img src="https://images.unsplash.com/photo-1603575448878-868a20723f5d?w=1600&q=80&auto=format&fit=crop" alt="Team"/>
-    <div class="team-hero-overlay"></div>
-    <div class="team-hero-content">
-      <p class="eyebrow">The People</p>
-      <h1 class="display">Our <em>Team</em></h1>
-      <p>Vibrant, hardworking professionals with a wealth of knowledge — ready to enhance your organisation's capacity.</p>
-    </div>
-  </section>
-
-  <section class="team-grid-section">
-    <div class="team-cards">
-      <div class="team-card reveal">
-        <div class="team-card-img">
-          <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80&auto=format&fit=crop" alt="CEO"/>
-          <div class="team-card-img-overlay"></div>
+        <div class="contact-card">
+          <div class="contact-item reveal delay-2">
+            <div class="contact-icon">☎</div>
+            <div>
+              <strong>Phone</strong>
+              <span>0782-456456<br>0750-555816<br>0774-733167</span>
+            </div>
+          </div>
+          <div class="contact-item reveal delay-3">
+            <div class="contact-icon">✉</div>
+            <div>
+              <strong>Email</strong>
+              <a href="mailto:educiergeconsults@gmail.com">educiergeconsults@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item reveal delay-4">
+            <div class="contact-icon">⌂</div>
+            <div>
+              <strong>Address</strong>
+              <span>Kamure Park Building<br>Plot 128 Old Kira Road<br>Bukoto, Kampala</span>
+            </div>
+          </div>
         </div>
-        <div class="team-card-body">
-          <div class="team-role-badge">CEO &amp; Founder</div>
-          <h3>Chief Executive</h3>
-          <p>A seasoned Customer Experience expert with over 14 years in banking, HR advisory, and organisational development across Uganda.</p>
-          <div class="skill-tags">
-            <span class="skill-tag">Recruitment</span>
-            <span class="skill-tag">CX Strategy</span>
-            <span class="skill-tag">HR Advisory</span>
-            <span class="skill-tag">Training</span>
+
+        <div class="contact-direct-grid">
+          <div class="contact-direct reveal">
+            <strong>Carolyne Agudo</strong>
+            <span><a href="tel:+256782456456">+256 782 456 456</a><br><a href="mailto:agudoca@yahoo.com">agudoca@yahoo.com</a></span>
+          </div>
+          <div class="contact-direct reveal delay-1">
+            <strong>Lonnah Arwako</strong>
+            <span><a href="tel:+256774733167">+256 774 733 167</a><br><a href="mailto:larwako@gmail.com">larwako@gmail.com</a></span>
           </div>
         </div>
       </div>
 
-      <div class="team-card reveal delay-1">
-        <div class="team-card-img">
-          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop" alt="Lead Consultant"/>
-          <div class="team-card-img-overlay"></div>
-        </div>
-        <div class="team-card-body">
-          <div class="team-role-badge">Lead Consultant</div>
-          <h3>HR &amp; Operations</h3>
-          <p>Over 10 years in HR management and organisational development across corporate and NGO sectors, with an MBA in progress.</p>
-          <div class="skill-tags">
-            <span class="skill-tag">Talent Sourcing</span>
-            <span class="skill-tag">Policy Design</span>
-            <span class="skill-tag">Operations</span>
+      <div class="contact-right">
+        <h2>Send Us a Message</h2>
+        <p class="sub">Use this form as a lead capture section for the live site. It is set up visually and ready to connect to your preferred backend handler.</p>
+        <form class="contact-form" action="mailto:educiergeconsults@gmail.com" method="post" enctype="text/plain">
+          <div class="contact-form-row">
+            <input type="text" name="first_name" placeholder="First Name" required>
+            <input type="text" name="last_name" placeholder="Last Name" required>
           </div>
-        </div>
-      </div>
-
-      <div class="team-card reveal delay-2">
-        <div class="team-card-img">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&auto=format&fit=crop" alt="Lead Consultant"/>
-          <div class="team-card-img-overlay"></div>
-        </div>
-        <div class="team-card-body">
-          <div class="team-role-badge">Lead Consultant</div>
-          <h3>Banking &amp; Restructuring</h3>
-          <p>Over 15 years in the banking sector, with deep expertise in organisational transformation, team restructuring, and resource management.</p>
-          <div class="skill-tags">
-            <span class="skill-tag">Change Mgmt</span>
-            <span class="skill-tag">HR Management</span>
-            <span class="skill-tag">Project Mgmt</span>
+          <div class="contact-form-row">
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" name="company" placeholder="Organisation / Company">
           </div>
-        </div>
+          <select name="service_interest" required>
+            <option value="">Service of Interest</option>
+            <option>Organisational Structure</option>
+            <option>Recruitment &amp; Talent Acquisition</option>
+            <option>Training &amp; Development</option>
+            <option>Assessment</option>
+            <option>General Enquiry</option>
+          </select>
+          <textarea name="message" placeholder="Tell us about your organisation and what support you need." required></textarea>
+          <button class="btn-ink" type="submit">Send Message</button>
+        </form>
+        <div class="contact-note">If you want, we can wire this form to a real server-side handler next so submissions do not depend on the visitor’s email app.</div>
       </div>
-    </div>
-  </section>
-</div><!-- /page-team -->
+    </section>
 
-<!-- ════════════════════════════════════
-     PAGE: TESTIMONIALS
-════════════════════════════════════ -->
-<div class="page" id="page-testimonials">
-  <section class="testi-hero">
-    <img src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=1600&q=80&auto=format&fit=crop" alt="Testimonials"/>
-    <div class="testi-hero-overlay"></div>
-    <div class="testi-hero-content">
-      <p class="eyebrow">Client Voices</p>
-      <h1 class="display">What Clients <em>Say</em></h1>
-      <p>Words from the organisations we've had the privilege of partnering with.</p>
-    </div>
-  </section>
-
-  <section class="testi-cards-section">
-    <div class="testi-cards-grid">
-      <div class="testi-card reveal">
-        <div class="testi-qmark">"</div>
-        <p>They have been of great support to us in training our staff, recruitment, and onboarding.</p>
-        <div class="testi-source">Service Corps</div>
-      </div>
-      <div class="testi-card reveal delay-1">
-        <div class="testi-qmark">"</div>
-        <p>They offered us a deeper understanding of staff and skilling the right team to enhance our productivity.</p>
-        <div class="testi-source">Daniel Chourdy Sales Institute</div>
-      </div>
-      <div class="testi-card reveal delay-2">
-        <div class="testi-qmark">"</div>
-        <p>Their experience, skills, and competence enable us to identify new business areas that have boosted our staff productivity and enhanced job satisfaction.</p>
-        <div class="testi-source">OcTech</div>
-      </div>
-    </div>
-
-    <div class="testi-full-band reveal">
-      <div class="testi-full-img">
-        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80&auto=format&fit=crop" alt="Client workshop"/>
-      </div>
-      <div class="testi-full-text">
-        <p class="eyebrow">Featured Review</p>
-        <p class="testi-full-quote">"Their experience, skills, and competence enable us to identify new business areas that have boosted our staff productivity and enhanced job satisfaction across the company."</p>
-        <div class="testi-full-attr">
-          <strong>OcTech</strong>
-          Satisfied Client
-        </div>
-        <div style="margin-top:2.5rem">
-          <button class="btn-gold" onclick="showPage('contact')">Work With Us</button>
-        </div>
-      </div>
-    </div>
-  </section>
-</div><!-- /page-testimonials -->
-
-<!-- ════════════════════════════════════
-     PAGE: CONTACT
-════════════════════════════════════ -->
-<div class="page" id="page-contact">
-  <div class="contact-split">
-    <div class="contact-left">
-      <p class="eyebrow reveal">Reach Out</p>
-      <h1 class="display reveal delay-1">Let's <em>Work</em><br>Together</h1>
-      <p class="reveal delay-2">We'd love to hear about your organisation and how we can help. Fill in the form or reach us directly using the details below.</p>
-
-      <div class="contact-detail reveal delay-2">
-        <div class="cicon">📞</div>
-        <div class="cdt">
-          <strong>Phone</strong>
-          <span>0782-456456 · 0750-555816 · 0774-733167</span>
-        </div>
-      </div>
-      <div class="contact-detail reveal delay-3">
-        <div class="cicon">✉️</div>
-        <div class="cdt">
-          <strong>Email</strong>
-          <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f89d9c8d9b919d8a9f9d9b97968b8d948c8bb89f95999194d69b9795">[email&#160;protected]</a></span>
-        </div>
-      </div>
-      <div class="contact-detail reveal delay-3">
-        <div class="cicon">📍</div>
-        <div class="cdt">
-          <strong>Address</strong>
-          <span>Kamure Park Building, Plot 128 Old Kira Road, Bukoto, Kampala</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="contact-right">
-      <h3>Send Us a Message</h3>
-      <p class="sub">We typically respond within one business day.</p>
-      <div class="cform">
-        <div class="cform-row">
-          <input type="text" placeholder="First Name"/>
-          <input type="text" placeholder="Last Name"/>
-        </div>
-        <input type="email" placeholder="Email Address"/>
-        <input type="text" placeholder="Organisation / Company"/>
-        <select>
-          <option value="" disabled selected>Service of Interest</option>
-          <option>Organisational Structure</option>
-          <option>Recruitment &amp; Talent Acquisition</option>
-          <option>Training &amp; Development</option>
-          <option>Employee Assessment</option>
-          <option>General Enquiry</option>
-        </select>
-        <textarea placeholder="Tell us about your organisation and what you're looking for…"></textarea>
-        <button class="btn-submit">Send Message →</button>
+    <div class="map-strip">
+      <img src="https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=1600&q=80" alt="Kampala cityscape">
+      <div class="map-card">
+        <strong>Educierge Consults</strong>
+        <span>Kamure Park Building, Plot 128 Old Kira Road, Bukoto, Kampala</span>
       </div>
     </div>
   </div>
+</main>
 
-  <div class="contact-map-strip">
-    <img src="https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=1600&q=80&auto=format&fit=crop" alt="Kampala Uganda"/>
-    <div class="map-overlay-card">
-      <strong>Educierge Consults</strong>
-      <p>Kamure Park Building<br>Plot 128 Old Kira Road, Bukoto<br>Kampala, Uganda</p>
-    </div>
-  </div>
-</div><!-- /page-contact -->
-
-<!-- ═══ FOOTER ═══ -->
 <footer id="footer">
-  <div class="footer-logo">Edu<span>cierge</span> Consults</div>
-  <div class="footer-copy">© 2023 Educierge Consults · <span style="color:var(--gold)">educierge.org</span></div>
+  <div class="footer-logo">
+    <img src="assets/logo.png" alt="Educierge Consults logo">
+  </div>
+  <div class="footer-copy">© <span id="year"></span> Educierge Consults · <b>educierge.org</b></div>
   <div class="footer-tagline">Resourcing · Skilling · Equipping</div>
 </footer>
 
-<!-- ═══════════════════════════════════════════
-     SCRIPTS
-═══════════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ─── Page routing ───
-function showPage(id, trigger) {
-  // hide all pages
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  // show target
-  const target = document.getElementById('page-' + id);
-  if (target) target.classList.add('active');
-
-  // update nav active state
-  document.querySelectorAll('.nav-pages a').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === id);
-  });
-
-  // scroll to top
-  window.scrollTo({top: 0, behavior: 'instant'});
-
-  // trigger reveal animations
-  setTimeout(initReveals, 80);
-
-  // lazy-load images
-  setTimeout(lazyImages, 100);
-}
-
-// ─── Scroll spy for nav shadow ───
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
-});
-
-// ─── Scroll reveal ───
-function initReveals() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.page.active .reveal').forEach(el => {
-    el.classList.remove('in');
-    obs.observe(el);
-  });
-}
-
-// ─── Mobile nav ───
-function toggleMobileNav() {
-  document.getElementById('mobile-nav').classList.toggle('open');
-}
-
-// ─── Hero image pan ───
-function lazyImages() {
-  document.querySelectorAll('img').forEach(img => {
-    if (img.complete) img.classList.add('loaded');
-    else img.ad
+<script src="script.js"></script>
+</body>
+</html>
