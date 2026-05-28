@@ -373,6 +373,16 @@ button {
   margin-top: 2.4rem;
 }
 
+.hero-panel .btn-outline {
+  color: rgba(255, 255, 255, 0.88);
+  border: 1.5px solid rgba(255, 255, 255, 0.32);
+}
+
+.hero-panel .btn-outline:hover {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.72);
+}
+
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
