@@ -233,13 +233,11 @@ button {
   transition: transform 0.24s ease;
 }
 
-.nav-pages a:hover,
-.nav-pages a.active {
+.nav-pages a:hover {
   color: var(--ink);
 }
 
-.nav-pages a:hover::after,
-.nav-pages a.active::after {
+.nav-pages a:hover::after {
   transform: scaleX(1);
 }
 
