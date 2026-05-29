@@ -1008,21 +1008,28 @@ button {
 }
 
 .team-card img {
+  width: 100%;
   height: 300px;
   object-fit: cover;
   object-position: center top;
 }
 
+.team-photo {
+  object-fit: contain;
+  object-position: center center;
+  background: linear-gradient(180deg, rgba(240, 236, 228, 0.95), rgba(232, 225, 213, 0.95));
+}
+
 .team-photo-thelma {
-  object-position: center 58%;
+  object-position: center center;
 }
 
 .team-photo-lonnah {
-  object-position: center 44%;
+  object-position: center center;
 }
 
 .team-photo-alvin {
-  object-position: center 46%;
+  object-position: center center;
 }
 
 .team-card-body {
