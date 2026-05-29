@@ -1014,19 +1014,41 @@ button {
 }
 
 .team-photo-thelma {
-  object-position: center 24%;
+  object-position: center 58%;
 }
 
 .team-photo-lonnah {
-  object-position: center 22%;
+  object-position: center 44%;
 }
 
 .team-photo-alvin {
-  object-position: center 26%;
+  object-position: center 46%;
 }
 
 .team-card-body {
   padding: 2rem;
+}
+
+.team-background {
+  margin-top: 1.7rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+}
+
+.team-background strong {
+  display: block;
+  margin-bottom: 0.85rem;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+}
+
+.team-background ul {
+  margin: 1rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  line-height: 1.8;
 }
 
 .role-badge {
