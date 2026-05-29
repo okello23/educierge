@@ -1013,6 +1013,18 @@ button {
   object-position: center top;
 }
 
+.team-photo-thelma {
+  object-position: center 24%;
+}
+
+.team-photo-lonnah {
+  object-position: center 22%;
+}
+
+.team-photo-alvin {
+  object-position: center 26%;
+}
+
 .team-card-body {
   padding: 2rem;
 }
