@@ -1000,7 +1000,9 @@ button {
 .team-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
   overflow: hidden;
+  padding: 2.5rem 2rem 2rem;
   transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
 
@@ -1010,9 +1012,11 @@ button {
 }
 
 .team-card img {
-  width: 100%;
+  width: min(240px, 100%);
   display: block;
-  height: clamp(360px, 34vw, 460px);
+  height: min(240px, 100vw - 5rem);
+  border-radius: 50%;
+  border: 6px solid var(--stone);
   object-fit: cover;
   object-position: center 18%;
   background: linear-gradient(180deg, rgba(240, 236, 228, 0.95), rgba(232, 225, 213, 0.95));
@@ -1035,7 +1039,9 @@ button {
 }
 
 .team-card-body {
-  padding: 2rem;
+  width: 100%;
+  padding: 2rem 0 0;
+  text-align: center;
 }
 
 .team-background {
@@ -1056,6 +1062,7 @@ button {
 .team-background ul {
   margin: 1rem 0 0;
   padding-left: 1.1rem;
+  text-align: left;
   color: var(--muted);
   line-height: 1.8;
 }
@@ -1079,6 +1086,7 @@ button {
 .pill-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.45rem;
   margin-top: 1.2rem;
 }
@@ -1461,7 +1469,8 @@ button {
   }
 
   .team-card img {
-    height: 400px;
+    width: 220px;
+    height: 220px;
   }
 }
 
@@ -1494,6 +1503,7 @@ button {
   }
 
   .team-card img {
-    height: 320px;
+    width: 200px;
+    height: 200px;
   }
 }
