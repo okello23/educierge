@@ -1041,6 +1041,9 @@ button {
 .team-card-body {
   width: 100%;
   padding: 2rem 0 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   text-align: center;
 }
 
@@ -1088,7 +1091,8 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.45rem;
-  margin-top: 1.2rem;
+  margin-top: auto;
+  padding-top: 1.5rem;
 }
 
 .pill {
