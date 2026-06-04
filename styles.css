@@ -694,6 +694,14 @@ button {
   line-height: 1.8;
 }
 
+#page-team .page-hero {
+  min-height: 72vh;
+}
+
+#page-team .page-hero img {
+  object-position: center 18%;
+}
+
 .story-grid {
   gap: 7rem;
   align-items: center;
@@ -1461,6 +1469,10 @@ button {
 
   .process-step .image {
     min-height: 220px;
+  }
+
+  #page-team .page-hero {
+    min-height: 64vh;
   }
 
   .mosaic {
